@@ -23,6 +23,7 @@ def bbs_call(command: str) -> str:
     r = requests.post(BBS_NODE_URL, data=f",{command}".encode("utf-8"),
         headers={"Content-Type": "text/plain; charset=utf-8"}, timeout=15)
     r.raise_for_status()
+    r.encoding = "utf-8"
     parts = r.text.strip().split(" ", 1)
     sid = parts[0]
     # If result already in first response (e.g. help)
@@ -37,6 +38,7 @@ def bbs_run(command: str) -> str:
     r0 = requests.post(BBS_NODE_URL, data=",".encode("utf-8"),
         headers={"Content-Type": "text/plain; charset=utf-8"}, timeout=10)
     r0.raise_for_status()
+    r0.encoding = "utf-8"
     sid = r0.text.strip().split()[0]
     # run
     r1 = requests.post(BBS_NODE_URL, data=f"{sid} {command}".encode("utf-8"),
