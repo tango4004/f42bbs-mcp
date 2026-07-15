@@ -124,12 +124,12 @@ def handle_tool(name: str, args: dict) -> str:
 # ── MCP HTTP handler ───────────────────────────────────────────────────────
 
 def mcp_ok(id_, result):
-    return Response(json.dumps({"jsonrpc":"2.0","id":id_,"result":result}),
+    return Response(json.dumps({"jsonrpc":"2.0","id":id_,"result":result}, ensure_ascii=False),
         mimetype="application/json")
 
 def mcp_err(id_, code, msg):
     return Response(json.dumps({"jsonrpc":"2.0","id":id_,
-        "error":{"code":code,"message":msg}}), mimetype="application/json")
+        "error":{"code":code,"message":msg}}, ensure_ascii=False), mimetype="application/json")
 
 @app.route("/mcp", methods=["GET"])
 def health():
@@ -138,7 +138,7 @@ def health():
 @app.route("/mcp", methods=["POST"])
 def mcp():
     if not check_auth():
-        return Response(json.dumps({"error":"unauthorized"}),
+        return Response(json.dumps({"error":"unauthorized"}, ensure_ascii=False),
             status=401, mimetype="application/json")
 
     try:
